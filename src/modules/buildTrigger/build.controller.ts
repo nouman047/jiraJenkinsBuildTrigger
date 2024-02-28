@@ -9,7 +9,7 @@ export async function registerBuildOnJenkins(
   try {
     const body = request.body;
     if (body) {
-      console.log(body);
+      console.log(JSON.stringify(body));
       const axiosInstance = axios.create({
         httpsAgent: new https.Agent({ rejectUnauthorized: false }) // This line tells Axios to ignore SSL certificate verification
     });
