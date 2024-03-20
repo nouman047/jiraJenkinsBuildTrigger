@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import buildRoutes from "./modules/buildTrigger/build.routes";
+import 'dotenv/config'
 
 
 
