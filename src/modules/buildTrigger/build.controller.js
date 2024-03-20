@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerBuildOnJenkins = void 0;
 const axios_1 = __importDefault(require("axios"));
 const https_1 = __importDefault(require("https"));
-const urlRegex = /(https?:\/\/[^\s]+)/;
+const urlRegex = /(https?:\/\/[^\s|]+)/;
+;
 function registerBuildOnJenkins(request, reply) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

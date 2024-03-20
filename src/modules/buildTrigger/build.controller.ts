@@ -3,7 +3,7 @@ import https from "https";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { AttachmentSchema, WebhookEventSchema } from "./build.schema";
 
-const urlRegex = /(https?:\/\/[^\s]+)/;
+const urlRegex = /(https?:\/\/[^\s|]+)/;;
 
 export async function registerBuildOnJenkins(
     request: FastifyRequest<{ Body: WebhookEventSchema }>,
