@@ -37,20 +37,20 @@ export async function registerBuildOnJenkins(
         }
 
         if (Object.keys(requestBody).length !== 0) {
-          // const axiosInstance = axios.create({
-          //   httpsAgent: new https.Agent({ rejectUnauthorized: false }), // Consider replacing this with proper SSL certificate validation
-          // });
+          const axiosInstance = axios.create({
+            httpsAgent: new https.Agent({ rejectUnauthorized: false }), // Consider replacing this with proper SSL certificate validation
+          });
 
-          // // Make a request to Jenkins
-          // const checkTriggerResponse: AxiosResponse = await axiosInstance.post(
-          //   "https://182.180.172.81/generic-webhook-trigger/invoke?token=thisiscodeautomationaisecretkeyforjenkinjobs",
-          //   requestBody
-          // );
+          // Make a request to Jenkins
+          const checkTriggerResponse: AxiosResponse = await axiosInstance.post(
+            "https://182.180.172.81/generic-webhook-trigger/invoke?token=thisiscodeautomationaisecretkeyforjenkinjobs",
+            requestBody
+          );
 
           // Return relevant data to the client
           return reply.code(200).send({
             message: "Job trigger successfully",
-            data: requestBody,
+            data: checkTriggerResponse.data,
           });
         }
       }
