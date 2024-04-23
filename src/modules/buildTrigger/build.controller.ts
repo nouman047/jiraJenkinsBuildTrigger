@@ -33,9 +33,8 @@ export async function registerBuildOnJenkins(
             ISSUE_KEY: body.issue.key,
           };
         } else {
-          return;
+          return reply.code(404).send({ message: "No action required" })
         }
-
         if (Object.keys(requestBody).length !== 0) {
           const axiosInstance = axios.create({
             httpsAgent: new https.Agent({ rejectUnauthorized: false }), // Consider replacing this with proper SSL certificate validation

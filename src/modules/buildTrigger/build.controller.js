@@ -45,7 +45,7 @@ function registerBuildOnJenkins(request, reply) {
                         };
                     }
                     else {
-                        return;
+                        return reply.code(404).send({ message: "No action required" });
                     }
                     if (Object.keys(requestBody).length !== 0) {
                         const axiosInstance = axios_1.default.create({
