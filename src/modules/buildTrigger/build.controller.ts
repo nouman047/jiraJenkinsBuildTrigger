@@ -3,7 +3,7 @@ import https from "https";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { AttachmentSchema, WebhookEventSchema } from "./build.schema";
 
-const urlRegex = /(https?:\/\/[^\s|]+)/;
+const urlRegex = /https?:\/\/[^\s\]]+/g;;
 
 export async function registerBuildOnJenkins(
   request: FastifyRequest<{ Body: WebhookEventSchema }>,
@@ -14,9 +14,11 @@ export async function registerBuildOnJenkins(
     let requestBody = {};
     if (body && body.webhookEvent === "comment_created") {
       const str = body.comment.body;
-      const match = str.match(urlRegex);
-      if (match && match[0] !== "") {
-        const url = match[0];
+      const match = [...str.matchAll(urlRegex)];
+      const urls = match.map(match => match[0]);
+      const joinedUrls = urls.join(",");
+      if (match && joinedUrls) {
+        const url = joinedUrls;
         if (str.includes("build") && str.includes("sitemap")) {
           requestBody = {
             ISSUE_KEY: body.issue.key,
@@ -35,20 +37,20 @@ export async function registerBuildOnJenkins(
         }
 
         if (Object.keys(requestBody).length !== 0) {
-          const axiosInstance = axios.create({
-            httpsAgent: new https.Agent({ rejectUnauthorized: false }), // Consider replacing this with proper SSL certificate validation
-          });
+          // const axiosInstance = axios.create({
+          //   httpsAgent: new https.Agent({ rejectUnauthorized: false }), // Consider replacing this with proper SSL certificate validation
+          // });
 
-          // Make a request to Jenkins
-          const checkTriggerResponse: AxiosResponse = await axiosInstance.post(
-            "https://182.180.172.81/generic-webhook-trigger/invoke?token=thisiscodeautomationaisecretkeyforjenkinjobs",
-            requestBody
-          );
+          // // Make a request to Jenkins
+          // const checkTriggerResponse: AxiosResponse = await axiosInstance.post(
+          //   "https://182.180.172.81/generic-webhook-trigger/invoke?token=thisiscodeautomationaisecretkeyforjenkinjobs",
+          //   requestBody
+          // );
 
           // Return relevant data to the client
           return reply.code(200).send({
             message: "Job trigger successfully",
-            data: checkTriggerResponse.data,
+            data: requestBody,
           });
         }
       }
